@@ -1,8 +1,17 @@
 
 import { Router } from 'express';
 import User from '../models/user.js';
+import bcrypt from 'bcryptjs';
 
 const router = Router();
+
+
+
+
+router.get("/", async (req, res) => {
+  const users = await User.find().select("-password");
+  res.render("index", { users });
+});
 
 
 
@@ -12,8 +21,9 @@ router.get("/add-user", (req, res) => {
 
 router.post("/add", async (req, res) => {
     const { userName, email, password } = req.body;
-      await User.create({ userName, email, password });
-      res.redirect("/");
+    const hashedPassword = await bcrypt.hashSync(password, 10);
+      await User.create({ userName, email, password: hashedPassword });
+      res.redirect("/user-list");
     });
 
 
@@ -29,13 +39,13 @@ router.post("/update/:id", async (req, res) => {
     email: req.body.email,
     password: req.body.password,
   });
-  res.redirect("/");
+  res.redirect("/user-list");
 });
 
 router.get("/delete/:id", async (req, res) => {
   const id = req.params.id;
   await User.findByIdAndDelete(id);
-  res.redirect("/");
+  res.redirect("/user-list");
 });
 
 export default router;

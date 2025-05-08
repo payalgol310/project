@@ -13,6 +13,7 @@ dotenv.config();
 
 const app = express();
 
+app.set("view engine", "ejs");
 app.use(
   cors({
     origin: "http://localhost:3001",
@@ -21,19 +22,19 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cookieParser());
 app.use(express.static("public"));
-
-
-app.set("view engine", "ejs");
 
 dbConnections();
 
 
 app.use("/auth", authRouter);
 app.use("/task", auth, taskRouter);
+app.use("/user", userRouter);
+
+
 
 
 app.get("/user",auth,async(req,res)=>{
@@ -52,13 +53,20 @@ app.get("/user",auth,async(req,res)=>{
   }
 })
 
+app.get("/",(req,res)=>{
+  res.redirect("/auth/login");
+})
 
-app.use("/user", userRouter);
 
-app.get("/", async (req, res) => {
-  const users = await user.find();
-  res.render("index", { users });
+app.get("/user-list",auth, async (req, res) => {
+  const users = await user.find({_id: {
+    $ne: req.userId
+  }}, { password: 0 });
+
+  res.render("user-list", { users: users || [] }); 
 });
+
+
 
 
 app.listen(3000, () => console.log("Server running on port 3000"));

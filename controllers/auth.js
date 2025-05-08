@@ -25,6 +25,7 @@ async function register(req, res) {
 
   res.cookie("auth", token);
 
+  res.redirect("/user-list")
 
   res.status(200).json({
     message: "register successfully",
@@ -51,19 +52,18 @@ async function login(req, res) {
 
   res.cookie("auth", token);
 
+  res.redirect("/user-list")
   
   res.status(200).json({
       message: "Logged in successfully",
       user
     });
 
-    // .....................
-    res.redirect("/todolist")
-    // .....................
 }
 
 async function logout(req, res) {
   res.clearCookie("auth");
+  res.redirect('/auth/login');
   res.status(200).json({ message: "Logged out successfully" });
  
 }
