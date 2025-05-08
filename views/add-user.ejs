@@ -1,29 +1,22 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <title>Add User</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input { padding: 10px; margin: 10px 0; width: 100%; }
+    button { padding: 10px; background: blue; color: white; }
+  </style>
 </head>
 <body>
-    <form action="/auth/register" method="post">
-
-        <label for="userName">Username</label>
-        <br>
-        <input type="text" name="userName" placeholder="Enter Username">
-        <br>
-       
-        <label for="email">Email</label>
-        <br>
-        <input type="email" name="email" placeholder="Enter your Email" >
-        <br>
-    
-        <label for="password">Password</label>
-        <br>
-        <input type="password" name="password" placeholder="Enter your Password" >
-        <br>
-        <input type="submit" value="Register">
-        
-    </form>
+  <h1>Add New User</h1>
+  
+  <form action="/user/add" method="POST">
+    <input type="text" name="userName" placeholder="Enter userName" required />
+    <input type="email" name="email" placeholder="Enter Email" required />
+    <input type="password" name="password" placeholder="Enter Password" required />
+    <button type="submit">Add User</button>
+  </form>
 </body>
 </html>
